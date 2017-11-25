@@ -9,16 +9,11 @@ function sendReqest(){
 	const unsplashHeader = new Headers();
 	unsplashHeader.append('Authorization',
 		'Client-ID f2a1f815f0b96c22d6e284850e4a5d833b66d129e8dc83093ea5fe5dc4d16b9e');
-	fetch(urlImg, {headers: unsplashHeader}).then(function(response){
-		return response.json();
-	}).then(addImageHandler);
-
+	fetch(urlImg, {headers: unsplashHeader}).then(response => response.json()).then(addImageHandler);
 
 	let urlArticle = `http://api.nytimes.com/svc/search/v2/articlesearch.json?q=
 	${searchedForText}&api-key=37bf624c5a0f4d20b289f682205aa9c8`;
-	fetch(urlArticle).then(function(response){
-		return response.json();
-	}).then(addArticleHandler);
+	fetch(urlArticle).then(response => response.json()).then(addArticleHandler);
 }
 
 function addImageHandler(data){
