@@ -9,11 +9,17 @@ function sendReqest(){
 	const unsplashHeader = new Headers();
 	unsplashHeader.append('Authorization',
 		'Client-ID f2a1f815f0b96c22d6e284850e4a5d833b66d129e8dc83093ea5fe5dc4d16b9e');
-	fetch(urlImg, {headers: unsplashHeader}).then(response => response.json()).then(addImageHandler);
+	fetch(urlImg, {headers: unsplashHeader})
+	.then(response => response.json())
+	.then(addImageHandler)
+	.catch(e => requestError(e, 'image'));
 
 	let urlArticle = `http://api.nytimes.com/svc/search/v2/articlesearch.json?q=
 	${searchedForText}&api-key=37bf624c5a0f4d20b289f682205aa9c8`;
-	fetch(urlArticle).then(response => response.json()).then(addArticleHandler);
+	fetch(urlArticle)
+	.then(response => response.json())
+	.then(addArticleHandler)
+	.catch(e => requestErrorArticle(e));;
 }
 
 function addImageHandler(data){
@@ -22,9 +28,9 @@ function addImageHandler(data){
 	imgField.innerHTML = "<img src="+firstImgUrl + ">";
 }
 
-function errorHandler(){
-	imgField.innerHTML = "<h2>An error occurred</h2>";
-	console.log( 'An error occurred \uD83D\uDE1E' );
+function requestError(e, part) {
+    console.log(e);
+    imgField.insertAdjacentHTML('beforeend', `<p class="network-warning">Oh no! There was an error making a request for the ${part}.</p>`);
 }
 
 function addArticleHandler(data){
@@ -33,9 +39,9 @@ function addArticleHandler(data){
 		<p>${article.snippet}</p>`});
 };
 
-function errorArticleHandler(){
+function requestErrorArticle(e){
+	console.log(e);
 	articleField.innerHTML="<h2>An error occurred</h2>";
-	console.log( 'An error occurred \uD83D\uDE1E' );
 }
 
 
